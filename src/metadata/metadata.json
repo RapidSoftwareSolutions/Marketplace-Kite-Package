@@ -1,0 +1,1980 @@
+{
+  "package": "Kite",
+  "tagline": "Kite API",
+  "description": "Kite.ly is a technology suite that can be embedded in any mobile app or website, enabling brands & businesses to print and ship products anywhere in the world. ",
+  "image": "http:\/\/logo.clearbit.com\/kite.ly",
+  "repo": "https:\/\/github.com\/RapidSoftwareSolutions\/Marketplace-Kite-Package",
+  "keywords": [
+    "API",
+    "kite",
+    "ecommerce",
+    "shipping"
+  ],
+  "accounts": {
+    "domain": "kite.ly",
+    "credentials": [
+      "apiKey",
+      "apiSecret"
+    ]
+  },
+  "events": [
+    {
+      "name": "webhookEvent",
+      "description": "This method is called every time a Kite webhook event occurs",
+      "payload": {
+        "environment": "TEST",
+        "time_submitted": "2016-5-1 23:12:30",
+        "order_id": "PS-KITE-WEBHOOK-TEST",
+        "job_id": "PS-KITE-WEBHOOK-TEST01-MS",
+        "status": "Shipped",
+        "is_reprint": false,
+        "product": {
+          "name": "Squares",
+          "id": "squares"
+        },
+        "customer_details": {
+          "name": "Joe Bloggs",
+          "email": "joe@bloggs.com"
+        },
+        "address": {
+          "shipping_address_1": "123 Kite Avenue",
+          "shipping_address_2": "",
+          "shipping_address_3": "London",
+          "shipping_address_4": "",
+          "shipping_address_5": "",
+          "shipping_postcode": "123 ABD",
+          "shipping_country": "United Kingdom",
+          "shipping_country_code": "GB"
+        }
+      },
+      "steps": [
+        "You can add a webhook link at the Dashboard Notifications(https://www.kite.ly/settings/notifications)"
+      ],
+      "args": [
+        {
+          "name": "token",
+          "type": "string",
+          "info": "Token sent on each message",
+          "required": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "name": "requestAssetUploadLinks",
+      "description": "Make a request to the Kite servers to get a signed Amazon S3 URL to which you can upload the asset. ",
+      "args": [
+        {
+          "name": "apiKey",
+          "type": "credentials",
+          "info": "Api key received from Kite",
+          "required": true
+        },
+        {
+          "name": "apiSecret",
+          "type": "credentials",
+          "info": "Api secret received from Kite",
+          "required": true
+        },
+        {
+          "name": "mimeTypes",
+          "type": "List",
+          "structure": {
+            "name": "mimeType",
+            "type": "Select",
+            "options": [
+              "image/jpeg",
+              "image/png",
+              "application/pdf"
+            ],
+            "info": "Single mime Type"
+          },
+          "info": "Array of one or more mime types for the assets that you want to upload.",
+          "required": true
+        }
+      ],
+      "callbacks": [
+        {
+          "name": "error",
+          "info": "Error"
+        },
+        {
+          "name": "success",
+          "info": "Success"
+        }
+      ]
+    },
+    {
+      "name": "uploadAsset",
+      "description": "Upload asset using previously generated link",
+      "args": [
+        {
+          "name": "signedAssetLink",
+          "type": "String",
+          "info": "signed_requests from requestAssetUploadLinks",
+          "required": true
+        },
+        {
+          "name": "asset",
+          "type": "File",
+          "info": "Asset file",
+          "required": true
+        },
+        {
+          "name": "mimeType",
+          "type": "Select",
+          "options": [
+            "image/jpeg",
+            "image/png",
+            "application/pdf"
+          ],
+          "info": "Mime type for the assets that you want to upload.",
+          "required": true
+        }
+      ],
+      "callbacks": [
+        {
+          "name": "error",
+          "info": "Error"
+        },
+        {
+          "name": "success",
+          "info": "Success"
+        }
+      ]
+    },
+    {
+      "name": "orderPrintProduct",
+      "description": "Make an order for print products",
+      "args": [
+        {
+          "name": "apiKey",
+          "type": "credentials",
+          "info": "Api key received from Kite",
+          "required": true
+        },
+        {
+          "name": "apiSecret",
+          "type": "credentials",
+          "info": "Api secret received from Kite",
+          "required": true
+        },
+        {
+          "name": "templateType",
+          "type": "Select",
+          "options": [
+            "magnets",
+            "squares",
+            "squares_mini",
+            "polaroids",
+            "polaroids_mini",
+            "photos_4x6",
+            "stickers_square",
+            "stickers_circle",
+            "greeting_cards",
+            "frames_50cm",
+            "frames_50cm_2x2",
+            "frames_50cm_3x3",
+            "frames_50cm_4x4",
+            "a1_poster",
+            "a1_poster_35",
+            "a1_poster_54",
+            "a1_poster_70",
+            "a2_poster",
+            "a2_poster_24",
+            "a2_poster_35",
+            "a2_poster_54",
+            "a3_poster"
+          ],
+          "info": "Template type to print. Detailed information available at https://www.kite.ly/docs/#ordering-print-products",
+          "required": true
+        },
+        {
+          "name": "assets",
+          "type": "List",
+          "structure": {
+            "name": "asset",
+            "type": "String",
+            "info": "Single asset"
+          },
+          "info": "Array of one or more assets to print",
+          "required": true
+        },
+        {
+          "name": "recipientName",
+          "type": "String",
+          "info": "The name of the person intended to receive the order",
+          "required": true
+        },
+        {
+          "name": "customerPhone",
+          "type": "String",
+          "info": "Customer phone",
+          "required": true
+        },
+        {
+          "name": "customerEmail",
+          "type": "String",
+          "info": "Customer email",
+          "required": false
+        },
+        {
+          "name": "addressLine1",
+          "type": "String",
+          "info": "The first line of the address",
+          "required": true
+        },
+        {
+          "name": "addressLine2",
+          "type": "String",
+          "info": "The second line of the address",
+          "required": false
+        },
+        {
+          "name": "addressLine3",
+          "type": "String",
+          "info": "The third line of the address",
+          "required": false
+        },
+        {
+          "name": "addressLine4",
+          "type": "String",
+          "info": "The fourth line of the address",
+          "required": false
+        },
+        {
+          "name": "countyState",
+          "type": "String",
+          "info": "The state/county/province of the address",
+          "required": false
+        },
+        {
+          "name": "city",
+          "type": "String",
+          "info": "The city of the address",
+          "required": true
+        },
+        {
+          "name": "postCode",
+          "type": "String",
+          "info": "The postcode of the address",
+          "required": true
+        },
+        {
+          "name": "countryCode",
+          "type": "String",
+          "info": "The countrycode of the address",
+          "required": true
+        },
+        {
+          "name": "amount",
+          "type": "String",
+          "info": "Accurate representation on the profit made on the sale within the orders section of the Kite dashboard.",
+          "required": true
+        },
+        {
+          "name": "currency",
+          "type": "String",
+          "info": "Currency code",
+          "required": true
+        }
+      ],
+      "callbacks": [
+        {
+          "name": "error",
+          "info": "Error"
+        },
+        {
+          "name": "success",
+          "info": "Success"
+        }
+      ]
+    },
+    {
+      "name": "orderPhoneCase",
+      "description": "Make an order for phone case",
+      "args": [
+        {
+          "name": "apiKey",
+          "type": "credentials",
+          "info": "Api key received from Kite",
+          "required": true
+        },
+        {
+          "name": "apiSecret",
+          "type": "credentials",
+          "info": "Api secret received from Kite",
+          "required": true
+        },
+        {
+          "name": "templateType",
+          "type": "Select",
+          "options": [
+            "i6splus_case",
+            "i6splus_tough_case",
+            "i6plus_case",
+            "i6plus_tough_case",
+            "i6s_case",
+            "i6s_tough_case",
+            "i6_case",
+            "i6_tough_case",
+            "i5_case",
+            "i5_tough_case",
+            "i5c_case",
+            "i5c_tough_case",
+            "i4_case",
+            "i4_tough_case",
+            "ipad_mini_case",
+            "ipad_air_case",
+            "ipad_case",
+            "samsung_s7e_case",
+            "samsung_s7_case",
+            "samsung_s6e_case",
+            "samsung_s6_case",
+            "samsung_s5_case",
+            "samsung_s5_mini_case",
+            "samsung_s4_case",
+            "samsung_s4_mini_case",
+            "samsung_s3_case",
+            "samsung_s3_mini_case",
+            "samsung_n4_case",
+            "samsung_n3_case",
+            "sony_x_z1_case",
+            "sony_x_c_case",
+            "lg_g2_case",
+            "nexus_7_case",
+            "nexus_5_case"
+          ],
+          "info": "Template type to print. Detailed information available at - https://www.kite.ly/docs/#ordering-phone-cases",
+          "required": true
+        },
+        {
+          "name": "caseStyle",
+          "type": "Select",
+          "options": [
+            "gloss",
+            "matte"
+          ],
+          "info": "Defaults to gloss if not present. matte style only valid for i4_case, i5_case, i5c_case, i6_case, i6s_case, i6plus_case, i6splus_case, samsung_s4_case, samsung_s5_case, samsung_s6_case , samsung_s6e_case, samsung_s7_case and samsung_s7e_case.",
+          "required": false
+        },
+        {
+          "name": "assets",
+          "type": "List",
+          "structure": {
+            "name": "asset",
+            "type": "String",
+            "info": "Single asset"
+          },
+          "info": "Array of one or more assets to print",
+          "required": true
+        },
+        {
+          "name": "recipientName",
+          "type": "String",
+          "info": "The name of the person intended to receive the order",
+          "required": true
+        },
+        {
+          "name": "customerPhone",
+          "type": "String",
+          "info": "Customer phone",
+          "required": true
+        },
+        {
+          "name": "customerEmail",
+          "type": "String",
+          "info": "Customer email",
+          "required": false
+        },
+        {
+          "name": "addressLine1",
+          "type": "String",
+          "info": "The first line of the address",
+          "required": true
+        },
+        {
+          "name": "addressLine2",
+          "type": "String",
+          "info": "The second line of the address",
+          "required": false
+        },
+        {
+          "name": "addressLine3",
+          "type": "String",
+          "info": "The third line of the address",
+          "required": false
+        },
+        {
+          "name": "addressLine4",
+          "type": "String",
+          "info": "The fourth line of the address",
+          "required": false
+        },
+        {
+          "name": "countyState",
+          "type": "String",
+          "info": "The state/county/province of the address",
+          "required": false
+        },
+        {
+          "name": "city",
+          "type": "String",
+          "info": "The city of the address",
+          "required": true
+        },
+        {
+          "name": "postCode",
+          "type": "String",
+          "info": "The postcode of the address",
+          "required": true
+        },
+        {
+          "name": "countryCode",
+          "type": "String",
+          "info": "The countrycode of the address",
+          "required": true
+        },
+        {
+          "name": "amount",
+          "type": "String",
+          "info": "Accurate representation on the profit made on the sale within the orders section of the Kite dashboard.",
+          "required": true
+        },
+        {
+          "name": "currency",
+          "type": "String",
+          "info": "Currency code",
+          "required": true
+        }
+      ],
+      "callbacks": [
+        {
+          "name": "error",
+          "info": "Error"
+        },
+        {
+          "name": "success",
+          "info": "Success"
+        }
+      ]
+    },
+    {
+      "name": "orderHomeware",
+      "description": "Make an order for homeware",
+      "args": [
+        {
+          "name": "apiKey",
+          "type": "credentials",
+          "info": "Api key received from Kite",
+          "required": true
+        },
+        {
+          "name": "apiSecret",
+          "type": "credentials",
+          "info": "Api secret received from Kite",
+          "required": true
+        },
+        {
+          "name": "templateType",
+          "type": "Select",
+          "options": [
+            "suede_12x12_cushion",
+            "suede_18x18_cushion",
+            "canvas_12x12_cushion",
+            "canvas_18x18_cushion",
+            "linen_12x12_cushion",
+            "linen_18x18_cushion",
+            "towel_55x105",
+            "towel_75x145",
+            "towel_85x165",
+            "mug_11oz",
+            "tote_bag_43x43cm",
+            "magnet_frame_10x10"
+          ],
+          "info": "Template type to print. Detailed information available at - https://www.kite.ly/docs/#ordering-homeware",
+          "required": true
+        },
+        {
+          "name": "assets",
+          "type": "List",
+          "structure": {
+            "name": "asset",
+            "type": "String",
+            "info": "Single asset"
+          },
+          "info": "Array of one or more assets to print",
+          "required": true
+        },
+        {
+          "name": "recipientName",
+          "type": "String",
+          "info": "The name of the person intended to receive the order",
+          "required": true
+        },
+        {
+          "name": "customerPhone",
+          "type": "String",
+          "info": "Customer phone",
+          "required": true
+        },
+        {
+          "name": "customerEmail",
+          "type": "String",
+          "info": "Customer email",
+          "required": false
+        },
+        {
+          "name": "addressLine1",
+          "type": "String",
+          "info": "The first line of the address",
+          "required": true
+        },
+        {
+          "name": "addressLine2",
+          "type": "String",
+          "info": "The second line of the address",
+          "required": false
+        },
+        {
+          "name": "addressLine3",
+          "type": "String",
+          "info": "The third line of the address",
+          "required": false
+        },
+        {
+          "name": "addressLine4",
+          "type": "String",
+          "info": "The fourth line of the address",
+          "required": false
+        },
+        {
+          "name": "countyState",
+          "type": "String",
+          "info": "The state/county/province of the address",
+          "required": false
+        },
+        {
+          "name": "city",
+          "type": "String",
+          "info": "The city of the address",
+          "required": true
+        },
+        {
+          "name": "postCode",
+          "type": "String",
+          "info": "The postcode of the address",
+          "required": true
+        },
+        {
+          "name": "countryCode",
+          "type": "String",
+          "info": "The countrycode of the address",
+          "required": true
+        },
+        {
+          "name": "amount",
+          "type": "String",
+          "info": "Accurate representation on the profit made on the sale within the orders section of the Kite dashboard.",
+          "required": true
+        },
+        {
+          "name": "currency",
+          "type": "String",
+          "info": "Currency code",
+          "required": true
+        }
+      ],
+      "callbacks": [
+        {
+          "name": "error",
+          "info": "Error"
+        },
+        {
+          "name": "success",
+          "info": "Success"
+        }
+      ]
+    },
+    {
+      "name": "orderDTGApparel",
+      "description": "Make an order for dtg apparel",
+      "args": [
+        {
+          "name": "apiKey",
+          "type": "credentials",
+          "info": "Api key received from Kite",
+          "required": true
+        },
+        {
+          "name": "apiSecret",
+          "type": "credentials",
+          "info": "Api secret received from Kite",
+          "required": true
+        },
+        {
+          "name": "templateType",
+          "type": "Select",
+          "options": [
+            "aa_mens_tshirt",
+            "aa_womens_tshirt",
+            "aa_zip_hoodie",
+            "aa_fleece_pullover_hoodie",
+            "aa_fine_zip_hoodie",
+            "aa_tank_top",
+            "awd_hooded_sweatshirt",
+            "awd_ladies_tank_top",
+            "awd_mens_muscle_vest",
+            "gildan_adult_cotton_tshirt",
+            "gildan_dry_blend_sweatshirt",
+            "gildan_zip_hooded_sweatshirt",
+            "gildan_hooded_sweatshirt",
+            "gildan_heavy_blend_sweatshirt",
+            "gildan_tank_top"
+          ],
+          "info": "Template type to print. Detailed information available at - https://www.kite.ly/docs/#ordering-dtg-apparel",
+          "required": true
+        },
+        {
+          "name": "garmentSize",
+          "type": "Select",
+          "options": [
+            "S",
+            "M",
+            "L",
+            "XL",
+            "XXL"
+          ],
+          "info": "The size of garment you want created. ",
+          "required": false
+        },
+        {
+          "name": "garmentColor",
+          "type": "String",
+          "info": "The base material/fabric colour of the garment you want created. Possible values - https://www.kite.ly/docs/#available-garment-colours",
+          "required": false
+        },
+        {
+          "name": "centerChest",
+          "type": "String",
+          "info": "Asset to print on center chest.",
+          "required": false
+        },
+        {
+          "name": "centerBack",
+          "type": "String",
+          "info": "Asset to print on center back.",
+          "required": false
+        },
+        {
+          "name": "recipientName",
+          "type": "String",
+          "info": "The name of the person intended to receive the order",
+          "required": true
+        },
+        {
+          "name": "customerPhone",
+          "type": "String",
+          "info": "Customer phone",
+          "required": true
+        },
+        {
+          "name": "customerEmail",
+          "type": "String",
+          "info": "Customer email",
+          "required": false
+        },
+        {
+          "name": "addressLine1",
+          "type": "String",
+          "info": "The first line of the address",
+          "required": true
+        },
+        {
+          "name": "addressLine2",
+          "type": "String",
+          "info": "The second line of the address",
+          "required": false
+        },
+        {
+          "name": "addressLine3",
+          "type": "String",
+          "info": "The third line of the address",
+          "required": false
+        },
+        {
+          "name": "addressLine4",
+          "type": "String",
+          "info": "The fourth line of the address",
+          "required": false
+        },
+        {
+          "name": "countyState",
+          "type": "String",
+          "info": "The state/county/province of the address",
+          "required": false
+        },
+        {
+          "name": "city",
+          "type": "String",
+          "info": "The city of the address",
+          "required": true
+        },
+        {
+          "name": "postCode",
+          "type": "String",
+          "info": "The postcode of the address",
+          "required": true
+        },
+        {
+          "name": "countryCode",
+          "type": "String",
+          "info": "The countrycode of the address",
+          "required": true
+        },
+        {
+          "name": "amount",
+          "type": "String",
+          "info": "Accurate representation on the profit made on the sale within the orders section of the Kite dashboard.",
+          "required": true
+        },
+        {
+          "name": "currency",
+          "type": "String",
+          "info": "Currency code",
+          "required": true
+        }
+      ],
+      "callbacks": [
+        {
+          "name": "error",
+          "info": "Error"
+        },
+        {
+          "name": "success",
+          "info": "Success"
+        }
+      ]
+    },
+    {
+      "name": "orderSublimationApparel",
+      "description": "Make an order for sublimation apparel",
+      "args": [
+        {
+          "name": "apiKey",
+          "type": "credentials",
+          "info": "Api key received from Kite",
+          "required": true
+        },
+        {
+          "name": "apiSecret",
+          "type": "credentials",
+          "info": "Api secret received from Kite",
+          "required": true
+        },
+        {
+          "name": "templateType",
+          "type": "Select",
+          "options": [
+            "awd_sublimation_tshirt",
+            "awd_kids_sublimation_tshirt",
+            "roly_sublimation_tshirt",
+            "aa_sublimation_tshirt",
+            "aa_sublimation_vest"
+          ],
+          "info": "Template type to print. Detailed information available at - https://www.kite.ly/docs/#ordering-sublimation-apparel",
+          "required": true
+        },
+        {
+          "name": "garmentSize",
+          "type": "Select",
+          "options": [
+            "S",
+            "M",
+            "L",
+            "XL",
+            "XXL",
+            "3to4",
+            "5to6",
+            "7to8",
+            "9to10",
+            "12to13"
+          ],
+          "info": "The size of garment you want created. ",
+          "required": false
+        },
+        {
+          "name": "frontImage",
+          "type": "String",
+          "info": "Asset to print on front area",
+          "required": false
+        },
+        {
+          "name": "backImage",
+          "type": "String",
+          "info": "Asset to print on back area",
+          "required": false
+        },
+        {
+          "name": "recipientName",
+          "type": "String",
+          "info": "The name of the person intended to receive the order",
+          "required": true
+        },
+        {
+          "name": "customerPhone",
+          "type": "String",
+          "info": "Customer phone",
+          "required": true
+        },
+        {
+          "name": "customerEmail",
+          "type": "String",
+          "info": "Customer email",
+          "required": false
+        },
+        {
+          "name": "addressLine1",
+          "type": "String",
+          "info": "The first line of the address",
+          "required": true
+        },
+        {
+          "name": "addressLine2",
+          "type": "String",
+          "info": "The second line of the address",
+          "required": false
+        },
+        {
+          "name": "addressLine3",
+          "type": "String",
+          "info": "The third line of the address",
+          "required": false
+        },
+        {
+          "name": "addressLine4",
+          "type": "String",
+          "info": "The fourth line of the address",
+          "required": false
+        },
+        {
+          "name": "countyState",
+          "type": "String",
+          "info": "The state/county/province of the address",
+          "required": false
+        },
+        {
+          "name": "city",
+          "type": "String",
+          "info": "The city of the address",
+          "required": true
+        },
+        {
+          "name": "postCode",
+          "type": "String",
+          "info": "The postcode of the address",
+          "required": true
+        },
+        {
+          "name": "countryCode",
+          "type": "String",
+          "info": "The countrycode of the address",
+          "required": true
+        },
+        {
+          "name": "amount",
+          "type": "String",
+          "info": "Accurate representation on the profit made on the sale within the orders section of the Kite dashboard.",
+          "required": true
+        },
+        {
+          "name": "currency",
+          "type": "String",
+          "info": "Currency code",
+          "required": true
+        }
+      ],
+      "callbacks": [
+        {
+          "name": "error",
+          "info": "Error"
+        },
+        {
+          "name": "success",
+          "info": "Success"
+        }
+      ]
+    },
+    {
+      "name": "orderPhotobookByJson",
+      "description": "Make an order for photobook using json structure",
+      "args": [
+        {
+          "name": "apiKey",
+          "type": "credentials",
+          "info": "Api key received from Kite",
+          "required": true
+        },
+        {
+          "name": "apiSecret",
+          "type": "credentials",
+          "info": "Api secret received from Kite",
+          "required": true
+        },
+        {
+          "name": "templateType",
+          "type": "Select",
+          "options": [
+            "rpi_wrap_280x210_sm",
+            "rpi_wrap_210x280_sm",
+            "rpi_wrap_140x140_sm",
+            "rpi_wrap_210x210_sm",
+            "rpi_wrap_300x300_sm"
+          ],
+          "info": "Template type to print. Detailed information available at - https://www.kite.ly/docs/#ordering-photobooks",
+          "required": true
+        },
+        {
+          "name": "pages",
+          "type": "List",
+          "structure": {
+            "name": "page",
+            "type": "String",
+            "info": "Single page"
+          },
+          "info": "Array of at least 20 page assets to print. ",
+          "required": true
+        },
+        {
+          "name": "frontCover",
+          "type": "String",
+          "info": "Asset to print on front cover",
+          "required": false
+        },
+        {
+          "name": "backCover",
+          "type": "String",
+          "info": "Asset to print on back cover",
+          "required": false
+        },
+        {
+          "name": "recipientName",
+          "type": "String",
+          "info": "The name of the person intended to receive the order",
+          "required": true
+        },
+        {
+          "name": "customerPhone",
+          "type": "String",
+          "info": "Customer phone",
+          "required": true
+        },
+        {
+          "name": "customerEmail",
+          "type": "String",
+          "info": "Customer email",
+          "required": false
+        },
+        {
+          "name": "addressLine1",
+          "type": "String",
+          "info": "The first line of the address",
+          "required": true
+        },
+        {
+          "name": "addressLine2",
+          "type": "String",
+          "info": "The second line of the address",
+          "required": false
+        },
+        {
+          "name": "addressLine3",
+          "type": "String",
+          "info": "The third line of the address",
+          "required": false
+        },
+        {
+          "name": "addressLine4",
+          "type": "String",
+          "info": "The fourth line of the address",
+          "required": false
+        },
+        {
+          "name": "countyState",
+          "type": "String",
+          "info": "The state/county/province of the address",
+          "required": false
+        },
+        {
+          "name": "city",
+          "type": "String",
+          "info": "The city of the address",
+          "required": true
+        },
+        {
+          "name": "postCode",
+          "type": "String",
+          "info": "The postcode of the address",
+          "required": true
+        },
+        {
+          "name": "countryCode",
+          "type": "String",
+          "info": "The countrycode of the address",
+          "required": true
+        },
+        {
+          "name": "amount",
+          "type": "String",
+          "info": "Accurate representation on the profit made on the sale within the orders section of the Kite dashboard.",
+          "required": true
+        },
+        {
+          "name": "currency",
+          "type": "String",
+          "info": "Currency code",
+          "required": true
+        }
+      ],
+      "callbacks": [
+        {
+          "name": "error",
+          "info": "Error"
+        },
+        {
+          "name": "success",
+          "info": "Success"
+        }
+      ]
+    },
+    {
+      "name": "orderPhotobookByPDF",
+      "description": "Make an order for photobook using pre-made PDF",
+      "args": [
+        {
+          "name": "apiKey",
+          "type": "credentials",
+          "info": "Api key received from Kite",
+          "required": true
+        },
+        {
+          "name": "apiSecret",
+          "type": "credentials",
+          "info": "Api secret received from Kite",
+          "required": true
+        },
+        {
+          "name": "templateType",
+          "type": "Select",
+          "options": [
+            "rpi_wrap_280x210_sm",
+            "rpi_wrap_210x280_sm",
+            "rpi_wrap_140x140_sm",
+            "rpi_wrap_210x210_sm",
+            "rpi_wrap_300x300_sm"
+          ],
+          "info": "Template type to print. Detailed information available at - https://www.kite.ly/docs/#ordering-photobooks",
+          "required": true
+        },
+        {
+          "name": "insidePdf",
+          "type": "String",
+          "info": "An image URL accessible to the Kite servers or an asset object identifier that you have received by uploading an asset to Kite. This image will be used as the inside block.",
+          "required": false
+        },
+        {
+          "name": "coverPdf",
+          "type": "String",
+          "info": "An image URL accessible to the Kite servers or an asset object identifier that you have received by uploading an asset to Kite. This image will be used as the front / back cover spread.",
+          "required": false
+        },
+        {
+          "name": "recipientName",
+          "type": "String",
+          "info": "The name of the person intended to receive the order",
+          "required": true
+        },
+        {
+          "name": "customerPhone",
+          "type": "String",
+          "info": "Customer phone",
+          "required": true
+        },
+        {
+          "name": "customerEmail",
+          "type": "String",
+          "info": "Customer email",
+          "required": false
+        },
+        {
+          "name": "addressLine1",
+          "type": "String",
+          "info": "The first line of the address",
+          "required": true
+        },
+        {
+          "name": "addressLine2",
+          "type": "String",
+          "info": "The second line of the address",
+          "required": false
+        },
+        {
+          "name": "addressLine3",
+          "type": "String",
+          "info": "The third line of the address",
+          "required": false
+        },
+        {
+          "name": "addressLine4",
+          "type": "String",
+          "info": "The fourth line of the address",
+          "required": false
+        },
+        {
+          "name": "countyState",
+          "type": "String",
+          "info": "The state/county/province of the address",
+          "required": false
+        },
+        {
+          "name": "city",
+          "type": "String",
+          "info": "The city of the address",
+          "required": true
+        },
+        {
+          "name": "postCode",
+          "type": "String",
+          "info": "The postcode of the address",
+          "required": true
+        },
+        {
+          "name": "countryCode",
+          "type": "String",
+          "info": "The countrycode of the address",
+          "required": true
+        },
+        {
+          "name": "amount",
+          "type": "String",
+          "info": "Accurate representation on the profit made on the sale within the orders section of the Kite dashboard.",
+          "required": true
+        },
+        {
+          "name": "currency",
+          "type": "String",
+          "info": "Currency code",
+          "required": true
+        }
+      ],
+      "callbacks": [
+        {
+          "name": "error",
+          "info": "Error"
+        },
+        {
+          "name": "success",
+          "info": "Success"
+        }
+      ]
+    },
+    {
+      "name": "orderPostcard",
+      "description": "Make an order for postcard",
+      "args": [
+        {
+          "name": "apiKey",
+          "type": "credentials",
+          "info": "Api key received from Kite",
+          "required": true
+        },
+        {
+          "name": "apiSecret",
+          "type": "credentials",
+          "info": "Api secret received from Kite",
+          "required": true
+        },
+        {
+          "name": "frontImage",
+          "type": "String",
+          "info": "A image URL accessible to the Kite servers or an asset object identifier that you have received by uploading an asset to Kite. It will form the front of the postcard",
+          "required": true
+        },
+        {
+          "name": "message",
+          "type": "String",
+          "info": "The text message that you want to appear on the back of the postcard",
+          "required": false
+        },
+        {
+          "name": "recipientName",
+          "type": "String",
+          "info": "The name of the person intended to receive the order",
+          "required": true
+        },
+        {
+          "name": "customerPhone",
+          "type": "String",
+          "info": "Customer phone",
+          "required": true
+        },
+        {
+          "name": "customerEmail",
+          "type": "String",
+          "info": "Customer email",
+          "required": false
+        },
+        {
+          "name": "addressLine1",
+          "type": "String",
+          "info": "The first line of the address",
+          "required": true
+        },
+        {
+          "name": "addressLine2",
+          "type": "String",
+          "info": "The second line of the address",
+          "required": false
+        },
+        {
+          "name": "addressLine3",
+          "type": "String",
+          "info": "The third line of the address",
+          "required": false
+        },
+        {
+          "name": "addressLine4",
+          "type": "String",
+          "info": "The fourth line of the address",
+          "required": false
+        },
+        {
+          "name": "countyState",
+          "type": "String",
+          "info": "The state/county/province of the address",
+          "required": false
+        },
+        {
+          "name": "city",
+          "type": "String",
+          "info": "The city of the address",
+          "required": true
+        },
+        {
+          "name": "postCode",
+          "type": "String",
+          "info": "The postcode of the address",
+          "required": true
+        },
+        {
+          "name": "countryCode",
+          "type": "String",
+          "info": "The countrycode of the address",
+          "required": true
+        },
+        {
+          "name": "amount",
+          "type": "String",
+          "info": "Accurate representation on the profit made on the sale within the orders section of the Kite dashboard.",
+          "required": true
+        },
+        {
+          "name": "currency",
+          "type": "String",
+          "info": "Currency code",
+          "required": true
+        }
+      ],
+      "callbacks": [
+        {
+          "name": "error",
+          "info": "Error"
+        },
+        {
+          "name": "success",
+          "info": "Success"
+        }
+      ]
+    },
+    {
+      "name": "orderGreetingCard",
+      "description": "Make an order for greeting card",
+      "args": [
+        {
+          "name": "apiKey",
+          "type": "credentials",
+          "info": "Api key received from Kite",
+          "required": true
+        },
+        {
+          "name": "apiSecret",
+          "type": "credentials",
+          "info": "Api secret received from Kite",
+          "required": true
+        },
+        {
+          "name": "templateType",
+          "type": "Select",
+          "options": [
+            "greeting_cards_a5",
+            "greeting_cards_7x5",
+            "greeting_cards_a5_10pack",
+            "greeting_cards_7x5_10pack"
+          ],
+          "info": "Template type to print. Detailed information available at - https://www.kite.ly/docs/#ordering-greeting-cards",
+          "required": true
+        },
+        {
+          "name": "frontImage",
+          "type": "String",
+          "info": "A image URL accessible to the Kite servers or an asset object identifier that you have received by uploading an asset to Kite. It will form the front of the greetings card",
+          "required": true
+        },
+        {
+          "name": "backImage",
+          "type": "String",
+          "info": "A image URL accessible to the Kite servers or an asset object identifier that you have received by uploading an asset to Kite.",
+          "required": false
+        },
+        {
+          "name": "insideLeftImage",
+          "type": "String",
+          "info": "A image URL accessible to the Kite servers or an asset object identifier that you have received by uploading an asset to Kite.",
+          "required": false
+        },
+        {
+          "name": "insideRightImage",
+          "type": "String",
+          "info": "A image URL accessible to the Kite servers or an asset object identifier that you have received by uploading an asset to Kite.",
+          "required": false
+        },
+        {
+          "name": "recipientName",
+          "type": "String",
+          "info": "The name of the person intended to receive the order",
+          "required": true
+        },
+        {
+          "name": "customerPhone",
+          "type": "String",
+          "info": "Customer phone",
+          "required": true
+        },
+        {
+          "name": "customerEmail",
+          "type": "String",
+          "info": "Customer email",
+          "required": false
+        },
+        {
+          "name": "addressLine1",
+          "type": "String",
+          "info": "The first line of the address",
+          "required": true
+        },
+        {
+          "name": "addressLine2",
+          "type": "String",
+          "info": "The second line of the address",
+          "required": false
+        },
+        {
+          "name": "addressLine3",
+          "type": "String",
+          "info": "The third line of the address",
+          "required": false
+        },
+        {
+          "name": "addressLine4",
+          "type": "String",
+          "info": "The fourth line of the address",
+          "required": false
+        },
+        {
+          "name": "countyState",
+          "type": "String",
+          "info": "The state/county/province of the address",
+          "required": false
+        },
+        {
+          "name": "city",
+          "type": "String",
+          "info": "The city of the address",
+          "required": true
+        },
+        {
+          "name": "postCode",
+          "type": "String",
+          "info": "The postcode of the address",
+          "required": true
+        },
+        {
+          "name": "countryCode",
+          "type": "String",
+          "info": "The countrycode of the address",
+          "required": true
+        },
+        {
+          "name": "amount",
+          "type": "String",
+          "info": "Accurate representation on the profit made on the sale within the orders section of the Kite dashboard.",
+          "required": true
+        },
+        {
+          "name": "currency",
+          "type": "String",
+          "info": "Currency code",
+          "required": true
+        }
+      ],
+      "callbacks": [
+        {
+          "name": "error",
+          "info": "Error"
+        },
+        {
+          "name": "success",
+          "info": "Success"
+        }
+      ]
+    },
+    {
+      "name": "orderInvitation",
+      "description": "Make an order for invitation",
+      "args": [
+        {
+          "name": "apiKey",
+          "type": "credentials",
+          "info": "Api key received from Kite",
+          "required": true
+        },
+        {
+          "name": "apiSecret",
+          "type": "credentials",
+          "info": "Api secret received from Kite",
+          "required": true
+        },
+        {
+          "name": "templateType",
+          "type": "Select",
+          "options": [
+            "square_invitations_15x15cm",
+            "square_invitations_15x15cm_10pack"
+          ],
+          "info": "Template type to print. Detailed information available at - https://www.kite.ly/docs/#ordering-invitations",
+          "required": true
+        },
+        {
+          "name": "frontImage",
+          "type": "String",
+          "info": "A image URL accessible to the Kite servers or an asset object identifier that you have received by uploading an asset to Kite.",
+          "required": true
+        },
+        {
+          "name": "backImage",
+          "type": "String",
+          "info": "A image URL accessible to the Kite servers or an asset object identifier that you have received by uploading an asset to Kite.",
+          "required": true
+        },
+        {
+          "name": "recipientName",
+          "type": "String",
+          "info": "The name of the person intended to receive the order",
+          "required": true
+        },
+        {
+          "name": "customerPhone",
+          "type": "String",
+          "info": "Customer phone",
+          "required": true
+        },
+        {
+          "name": "customerEmail",
+          "type": "String",
+          "info": "Customer email",
+          "required": false
+        },
+        {
+          "name": "addressLine1",
+          "type": "String",
+          "info": "The first line of the address",
+          "required": true
+        },
+        {
+          "name": "addressLine2",
+          "type": "String",
+          "info": "The second line of the address",
+          "required": false
+        },
+        {
+          "name": "addressLine3",
+          "type": "String",
+          "info": "The third line of the address",
+          "required": false
+        },
+        {
+          "name": "addressLine4",
+          "type": "String",
+          "info": "The fourth line of the address",
+          "required": false
+        },
+        {
+          "name": "countyState",
+          "type": "String",
+          "info": "The state/county/province of the address",
+          "required": false
+        },
+        {
+          "name": "city",
+          "type": "String",
+          "info": "The city of the address",
+          "required": true
+        },
+        {
+          "name": "postCode",
+          "type": "String",
+          "info": "The postcode of the address",
+          "required": true
+        },
+        {
+          "name": "countryCode",
+          "type": "String",
+          "info": "The countrycode of the address",
+          "required": true
+        },
+        {
+          "name": "amount",
+          "type": "String",
+          "info": "Accurate representation on the profit made on the sale within the orders section of the Kite dashboard.",
+          "required": true
+        },
+        {
+          "name": "currency",
+          "type": "String",
+          "info": "Currency code",
+          "required": true
+        }
+      ],
+      "callbacks": [
+        {
+          "name": "error",
+          "info": "Error"
+        },
+        {
+          "name": "success",
+          "info": "Success"
+        }
+      ]
+    },
+    {
+      "name": "listOrders",
+      "description": "List all orders",
+      "args": [
+        {
+          "name": "apiKey",
+          "type": "credentials",
+          "info": "Api key received from Kite",
+          "required": true
+        },
+        {
+          "name": "apiSecret",
+          "type": "credentials",
+          "info": "Api secret received from Kite",
+          "required": true
+        },
+        {
+          "name": "orderBy",
+          "type": "Select",
+          "options": [
+            "time_submitted",
+            "-time_submitted",
+            "status",
+            "-status"
+          ],
+          "info": "Controls the ordering of the returned orders, valid options are time_submitted & status. A - can be added to the front of any option i.e. -time_submitted to reverse the ordering.",
+          "required": false
+        },
+        {
+          "name": "testOrder",
+          "type": "Boolean",
+          "info": "If true then the results will be be filtered to only include test orders, if false then only live orders will be returned",
+          "required": false
+        },
+        {
+          "name": "errorExclude",
+          "type": "Boolean",
+          "info": "If true then results will be filtered to only include successful orders, if false then only orders for which an error has occured will be returned",
+          "required": false
+        },
+        {
+          "name": "refundRequested",
+          "type": "Boolean",
+          "info": "If true then results will be filtered to only include orders for which the customer has requested a refunded, if false then only orders for which there has been no refund request",
+          "required": false
+        },
+        {
+          "name": "timeSubmitted",
+          "type": "DatePicker",
+          "info": "GTE datetime. Orders will be filtered to only include those that were placed after this date & time",
+          "required": false
+        },
+        {
+          "name": "offset",
+          "type": "Number",
+          "info": "The offset into the result set of objects returned",
+          "required": false
+        },
+        {
+          "name": "limit",
+          "type": "Number",
+          "info": "By default, you get returned a paginated set of objects (20 per page is the default), by specifying the limit argument you can control the number of objects returned",
+          "required": false
+        }
+      ],
+      "callbacks": [
+        {
+          "name": "error",
+          "info": "Error"
+        },
+        {
+          "name": "success",
+          "info": "Success"
+        }
+      ]
+    },
+    {
+      "name": "getOrderStatus",
+      "description": "Get status of single order",
+      "args": [
+        {
+          "name": "apiKey",
+          "type": "credentials",
+          "info": "Api key received from Kite",
+          "required": true
+        },
+        {
+          "name": "apiSecret",
+          "type": "credentials",
+          "info": "Api secret received from Kite",
+          "required": true
+        },
+        {
+          "name": "orderId",
+          "type": "String",
+          "info": "Id of the order",
+          "required": true
+        }
+      ],
+      "callbacks": [
+        {
+          "name": "error",
+          "info": "Error"
+        },
+        {
+          "name": "success",
+          "info": "Success"
+        }
+      ]
+    },
+    {
+      "name": "listShippingMethods",
+      "description": "List all shipping methods",
+      "args": [
+        {
+          "name": "apiKey",
+          "type": "credentials",
+          "info": "Api key received from Kite",
+          "required": true
+        },
+        {
+          "name": "apiSecret",
+          "type": "credentials",
+          "info": "Api secret received from Kite",
+          "required": true
+        },
+        {
+          "name": "offset",
+          "type": "Number",
+          "info": "The offset into the result set of objects returned",
+          "required": false
+        },
+        {
+          "name": "limit",
+          "type": "Number",
+          "info": "By default, you get returned a paginated set of objects (20 per page is the default), by specifying the limit argument you can control the number of objects returned",
+          "required": false
+        }
+      ],
+      "callbacks": [
+        {
+          "name": "error",
+          "info": "Error"
+        },
+        {
+          "name": "success",
+          "info": "Success"
+        }
+      ]
+    },
+    {
+      "name": "getShippingMethodsByTemplate",
+      "description": "List all shipping methods for the template",
+      "args": [
+        {
+          "name": "apiKey",
+          "type": "credentials",
+          "info": "Api key received from Kite",
+          "required": true
+        },
+        {
+          "name": "apiSecret",
+          "type": "credentials",
+          "info": "Api secret received from Kite",
+          "required": true
+        },
+        {
+          "name": "template",
+          "type": "String",
+          "info": "Name of the template",
+          "required": true
+        },
+        {
+          "name": "offset",
+          "type": "Number",
+          "info": "The offset into the result set of objects returned",
+          "required": false
+        },
+        {
+          "name": "limit",
+          "type": "Number",
+          "info": "By default, you get returned a paginated set of objects (20 per page is the default), by specifying the limit argument you can control the number of objects returned",
+          "required": false
+        }
+      ],
+      "callbacks": [
+        {
+          "name": "error",
+          "info": "Error"
+        },
+        {
+          "name": "success",
+          "info": "Success"
+        }
+      ]
+    },
+    {
+      "name": "listCustomers",
+      "description": "List all customers",
+      "args": [
+        {
+          "name": "apiKey",
+          "type": "credentials",
+          "info": "Api key received from Kite",
+          "required": true
+        },
+        {
+          "name": "apiSecret",
+          "type": "credentials",
+          "info": "Api secret received from Kite",
+          "required": true
+        },
+        {
+          "name": "customer",
+          "type": "String",
+          "info": "If true then the resulting people list will be filtered to only include those who have placed an order, if false then the resulting list will only include people who have not placed an order",
+          "required": false
+        },
+        {
+          "name": "country",
+          "type": "List",
+          "structure": {
+            "name": "country",
+            "type": "String",
+            "info": "Country code"
+          },
+          "info": "Array of 3 digit country codes i.e. GBR,USA that will filter the resulting person list to only include people coming from the specified countries",
+          "required": false
+        },
+        {
+          "name": "orderCountMore",
+          "type": "Number",
+          "info": "Filters the resulting list to only include customers who have ordered more than the specified number of times",
+          "required": false
+        },
+        {
+          "name": "orderCountLess",
+          "type": "Number",
+          "info": "Filters the resulting list to only include customers who have ordered less than the specified number of times",
+          "required": false
+        },
+        {
+          "name": "lastOrderedDateMore",
+          "type": "String",
+          "info": "Filters the resulting person list to only include people that have ordered more recently that the value. Valid values include Ndays, Nweeks, Nmonths where N is a number",
+          "required": false
+        },
+        {
+          "name": "lastOrderedDateLess",
+          "type": "String",
+          "info": "Filters the resulting person list to only include people that have ordered less recently that the value. Valid values include Ndays, Nweeks, Nmonths where N is a number",
+          "required": false
+        },
+        {
+          "name": "offset",
+          "type": "Number",
+          "info": "The offset into the result set of objects returned",
+          "required": false
+        },
+        {
+          "name": "pushTokenIsset",
+          "type": "Boolean",
+          "info": "If true filters the resulting list to only include people with push notification tokens, if false filters the resulting list to only include people without push notification tokens",
+          "required": false
+        },
+        {
+          "name": "livePerson",
+          "type": "Boolean",
+          "info": "If true filters the resulting person list to only include people created in the live environment, if false filters the resulting person list to only include people created in the test environment",
+          "required": false
+        },
+        {
+          "name": "createdBefore",
+          "type": "DatePicker",
+          "info": "Filters the resulting list to only include those people created before the specified date time",
+          "required": false
+        },
+        {
+          "name": "limit",
+          "type": "Number",
+          "info": "By default, you get returned a paginated set of objects (20 per page is the default), by specifying the limit argument you can control the number of objects returned",
+          "required": false
+        }
+      ],
+      "callbacks": [
+        {
+          "name": "error",
+          "info": "Error"
+        },
+        {
+          "name": "success",
+          "info": "Success"
+        }
+      ]
+    },
+    {
+      "name": "getCustomerDetails",
+      "description": "Get detailed information about single customer",
+      "args": [
+        {
+          "name": "apiKey",
+          "type": "credentials",
+          "info": "Api key received from Kite",
+          "required": true
+        },
+        {
+          "name": "apiSecret",
+          "type": "credentials",
+          "info": "Api secret received from Kite",
+          "required": true
+        },
+        {
+          "name": "customerId",
+          "type": "String",
+          "info": "Id of the customer",
+          "required": true
+        }
+      ],
+      "callbacks": [
+        {
+          "name": "error",
+          "info": "Error"
+        },
+        {
+          "name": "success",
+          "info": "Success"
+        }
+      ]
+    },
+    {
+      "name": "searchAddressBySearchTerm",
+      "description": "You can perform a search on any part of the address not just the ZIP/Postal code and our smart sorting of results will order by nearest locations first. We also recognise common misspellings.",
+      "args": [
+        {
+          "name": "apiKey",
+          "type": "credentials",
+          "info": "Api key received from Kite",
+          "required": true
+        },
+        {
+          "name": "apiSecret",
+          "type": "credentials",
+          "info": "Api secret received from Kite",
+          "required": true
+        },
+        {
+          "name": "countryCode",
+          "type": "String",
+          "info": "Three letter country code to which the address search will be restricted",
+          "required": true
+        },
+        {
+          "name": "searchTerm",
+          "type": "String",
+          "info": "A free text value, often encompassing the first line of address or ZIP/Postal code, on which the search is performed.",
+          "required": true
+        }
+      ],
+      "callbacks": [
+        {
+          "name": "error",
+          "info": "Error"
+        },
+        {
+          "name": "success",
+          "info": "Success"
+        }
+      ]
+    },
+    {
+      "name": "searchAddressByAddressId",
+      "description": "You can perform a search on any part of the address not just the ZIP/Postal code and our smart sorting of results will order by nearest locations first. We also recognise common misspellings.",
+      "args": [
+        {
+          "name": "apiKey",
+          "type": "credentials",
+          "info": "Api key received from Kite",
+          "required": true
+        },
+        {
+          "name": "apiSecret",
+          "type": "credentials",
+          "info": "Api secret received from Kite",
+          "required": true
+        },
+        {
+          "name": "countryCode",
+          "type": "String",
+          "info": "Three letter country code to which the address search will be restricted",
+          "required": true
+        },
+        {
+          "name": "addressId",
+          "type": "String",
+          "info": "A parameter referencing a previously returned address search results list item that can be used to lookup a unique address. ",
+          "required": true
+        }
+      ],
+      "callbacks": [
+        {
+          "name": "error",
+          "info": "Error"
+        },
+        {
+          "name": "success",
+          "info": "Success"
+        }
+      ]
+    }
+  ]
+}
