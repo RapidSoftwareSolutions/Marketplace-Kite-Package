@@ -38,7 +38,7 @@ $app->post('/api/Kite/orderPostcard', function ($request, $response, $args) {
     $post_data['args']['shipping_address']['city'] = $post_data['args']['city'];
     $post_data['args']['shipping_address']['postcode'] = $post_data['args']['postCode'];
     $post_data['args']['shipping_address']['country_code'] = $post_data['args']['countryCode'];
-    $post_data['args']['customer_payment']['amount'] = $post_data['args']['amount'];
+    $post_data['args']['customer_payment']['amount'] = (float) $post_data['args']['amount'];
     $post_data['args']['customer_payment']['currency'] = $post_data['args']['currency'];
     $params = [
         'apiKey' => 'apiKey',
