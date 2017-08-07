@@ -358,8 +358,8 @@ List all customers
 | country            | List       | Array of 3 digit country codes i.e. GBR,USA that will filter the resulting person list to only include people coming from the specified countries
 | orderCountMore     | Number     | Filters the resulting list to only include customers who have ordered more than the specified number of times
 | orderCountLess     | Number     | Filters the resulting list to only include customers who have ordered less than the specified number of times
-| lastOrderedDateMore| String     | Filters the resulting person list to only include people that have ordered more recently that the value. Valid values include Ndays, Nweeks, Nmonths where N is a number
-| lastOrderedDateLess| String     | Filters the resulting person list to only include people that have ordered less recently that the value. Valid values include Ndays, Nweeks, Nmonths where N is a number
+| lastOrderedDateMore| String     | Filters the resulting person list to only include people that have ordered more recently that the value. Valid values include Ndays, Nweeks, Nmonths where N is a number. E.g. 1days / 7weeks.
+| lastOrderedDateLess| String     | Filters the resulting person list to only include people that have ordered less recently that the value. Valid values include Ndays, Nweeks, Nmonths where N is a number. E.g. 1days / 7weeks.
 | offset             | Number     | The offset into the result set of objects returned
 | pushTokenIsset     | Boolean    | If true filters the resulting list to only include people with push notification tokens, if false filters the resulting list to only include people without push notification tokens
 | livePerson         | Boolean    | If true filters the resulting person list to only include people created in the live environment, if false filters the resulting person list to only include people created in the test environment

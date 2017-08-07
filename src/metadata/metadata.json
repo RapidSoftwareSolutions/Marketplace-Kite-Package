@@ -1811,13 +1811,13 @@
         {
           "name": "lastOrderedDateMore",
           "type": "String",
-          "info": "Filters the resulting person list to only include people that have ordered more recently that the value. Valid values include Ndays, Nweeks, Nmonths where N is a number",
+          "info": "Filters the resulting person list to only include people that have ordered more recently that the value. Valid values include Ndays, Nweeks, Nmonths where N is a number. E.g. 1days / 7weeks.",
           "required": false
         },
         {
           "name": "lastOrderedDateLess",
           "type": "String",
-          "info": "Filters the resulting person list to only include people that have ordered less recently that the value. Valid values include Ndays, Nweeks, Nmonths where N is a number",
+          "info": "Filters the resulting person list to only include people that have ordered less recently that the value. Valid values include Ndays, Nweeks, Nmonths where N is a number. E.g. 1days / 7weeks.",
           "required": false
         },
         {

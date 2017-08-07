@@ -21,10 +21,9 @@ class ApiRequestFacade
             $rawBody = json_decode($resp->getBody());
             $all_data[] = $rawBody;
             if ($resp->getStatusCode() == $responseCode) {
-                $all_data = $reqType == 'DELETE' ? ['result' => 'deleted'] : $all_data;
-
                 $result['callback'] = 'success';
                 $result['contextWrites']['to'] = is_array($all_data) ? $all_data : json_decode($all_data);
+                $result['contextWrites']['to'] = $result['contextWrites']['to'][0] == null ? ['result' =>"completed"] : $result['contextWrites']['to'];
             } else {
                 $result['callback'] = 'error';
                 $result['contextWrites']['to']['status_code'] = 'API_ERROR';
