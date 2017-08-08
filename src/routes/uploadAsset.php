@@ -32,7 +32,7 @@ $app->post('/api/Kite/uploadAsset', function ($request, $response, $args) {
         $all_data[] = $rawBody;
         if ($response->getStatusCode() == '200') {
             $result['callback'] = 'success';
-            $result['contextWrites']['to'] = 'uploaded';
+            $result['contextWrites']['to'] = ['result'=>'uploaded'];
         } else {
             $result['callback'] = 'error';
             $result['contextWrites']['to']['status_code'] = 'API_ERROR';
